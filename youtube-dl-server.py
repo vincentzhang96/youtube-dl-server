@@ -97,13 +97,17 @@ def get_ydl_options(request_options):
         'format': ydl_vars['YDL_FORMAT'],
         'postprocessors': postprocessors,
         'outtmpl': ydl_vars['YDL_OUTPUT_TEMPLATE'],
-        'download_archive': ydl_vars['YDL_ARCHIVE_FILE']
+        'download_archive': ydl_vars['YDL_ARCHIVE_FILE'],
+        'ignoreerrors': True
     }
 
 
 def download(url, request_options):
-    with youtube_dl.YoutubeDL(get_ydl_options(request_options)) as ydl:
-        ydl.download([url])
+    try:
+        with youtube_dl.YoutubeDL(get_ydl_options(request_options)) as ydl:
+            ydl.download([url])
+    except:
+        print("Failed to process " + url)
 
 
 dl_q = Queue()
